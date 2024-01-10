@@ -8,7 +8,7 @@ import net.salesianos.server.threads.ClientHandler;
 
 public class ServerApp {
     public static void main(String[] args) throws Exception {
-        ServerSocket serverSocket = new ServerSocket(50000);
+        ServerSocket serverSocket = new ServerSocket(55000);
 
         while (true) {
             System.out.println("Esperando conexión...");

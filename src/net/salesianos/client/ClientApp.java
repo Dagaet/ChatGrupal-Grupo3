@@ -16,12 +16,15 @@ public class ClientApp {
         
         System.out.println("¿Cómo te llamas?");
         String username = SCANNER.nextLine();
+        Socket socket = new Socket("localhost", 55000);
 
-        Socket socket = new Socket("localhost", 50000);
         ObjectOutputStream objOutStream = new ObjectOutputStream(socket.getOutputStream());
-         ObjectInputStream objInStream = new ObjectInputStream(socket.getInputStream());
-        //ServerListener serverListener = new ServerListener(objInStream);
-        //serverListener.start();
+        objOutStream.writeUTF(username);
+        
+        ObjectInputStream objInStream = new ObjectInputStream(socket.getInputStream());
+        ServerListener serverListener = new ServerListener(objInStream);
+        serverListener.start();
+
         while (userOption != -1) {
             System.out.println("Va a enviar datos de persona al servidor.");
             Message msg = new Message();
