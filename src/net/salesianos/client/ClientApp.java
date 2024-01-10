@@ -31,10 +31,12 @@ public class ClientApp {
             msg.setUsername(username);
             System.out.print("Introduzca el mensaje: ");
             String content = SCANNER.nextLine();
-            if (content.substring(0, 4).equals("msg:")) {
+            System.out.println("contenido:" + content.substring(0, 3));
+
+            if (content.substring(0,3).equals("bye")) {
+                break;
+            } else if (content.substring(0, 4).equals("msg:") ) {
                 msg.setContent(content.substring(4, content.length()));
-            } else if (content.substring(0, 3).equals("bye")) {
-                userOption = -1;
             }
             objOutStream.writeObject(msg);
             try {
