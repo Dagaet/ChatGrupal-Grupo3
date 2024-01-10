@@ -5,6 +5,8 @@ public class Message {
     private String username;
     private String content;
 
+    public Message() {}
+    
     public Message(String date, String username, String content) {
         this.date = date;
         this.username = username;
