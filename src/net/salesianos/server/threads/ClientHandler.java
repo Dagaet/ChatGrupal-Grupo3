@@ -3,15 +3,12 @@ import java.io.EOFException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.net.Socket;
 import java.util.ArrayList;
 
 import net.salesianos.shared.models.Message;
 
 public class ClientHandler extends Thread {
     
-    private Socket clientSocket;
-
     private ObjectInputStream clientObjInStream;
     private ObjectOutputStream clientObjOutStream;
     private ArrayList<ObjectOutputStream> connectedObjOutputStreamList;
