@@ -1,12 +1,14 @@
 package net.salesianos.shared.models;
 
-public class Message {
+import java.io.Serializable;
+
+public class Message implements Serializable{
     private String date;
     private String username;
     private String content;
 
     public Message() {}
-    
+
     public Message(String date, String username, String content) {
         this.date = date;
         this.username = username;
