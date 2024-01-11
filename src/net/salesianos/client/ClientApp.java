@@ -26,26 +26,21 @@ public class ClientApp {
         serverListener.start();
 
         while (userOption != -1) {
-            System.out.println("Va a enviar datos de persona al servidor.");
             Message msg = new Message();
             msg.setUsername(username);
-            System.out.print("Introduzca el mensaje: ");
+            System.out.print("->");
             String content = SCANNER.nextLine();
-            System.out.println("contenido:" + content.substring(0, 3));
-
-            if (content.substring(0,3).equals("bye")) {
-                break;
-            } else if (content.substring(0, 4).equals("msg:") ) {
-                msg.setContent(content.substring(4, content.length()));
-            }
+            msg.setContent(content);
+            
             objOutStream.writeObject(msg);
-            try {
-                System.out.println("Pulse -1 pa salir o cualquier cosa para continuar: ");
-                userOption = SCANNER.nextInt();
-                SCANNER.nextLine();
-            } catch (InputMismatchException e) {
-                System.out.println("Continuamos...");
-            }
+            
+            // try {
+            //     System.out.println("Pulse -1 pa salir o cualquier cosa para continuar: ");
+            //     userOption = SCANNER.nextInt();
+            //     SCANNER.nextLine();
+            // } catch (InputMismatchException e) {
+            //     System.out.println("Continuamos...");
+            // }
         }
         SCANNER.close();
         objOutStream.close();

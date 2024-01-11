@@ -24,10 +24,27 @@ public class ClientHandler extends Thread {
         try {
 
             username = this.clientObjInStream.readUTF();
-
             while (true) {
                 Message msg = (Message) this.clientObjInStream.readObject();
-                System.out.println(username + ": " + msg.getContent());
+                if (msg.getContent().startsWith("bye")) {
+                    msg.setContent(null);
+                    clientObjOutStream.writeUTF("Saliendo ");
+                    this.connectedObjOutputStreamList.remove(this.clientObjOutStream);
+                    this.clientObjOutStream.close();
+                    break;
+                } else if (msg.getContent().startsWith("msg:") ) {
+                    msg.setContent(msg.getContent().substring(4, msg.getContent().length()));
+                    System.out.println(username + ": " + msg.getContent());
+                } else {
+                    clientObjOutStream.writeUTF("No sabes escribir");
+                }
+
+                for (ObjectOutputStream otherObjOutputStream : connectedObjOutputStreamList) {
+                    if (otherObjOutputStream != this.clientObjOutStream) {
+                        otherObjOutputStream.writeObject(msg);
+                    }
+                }
+
             }
 
         } catch (EOFException eofException) {

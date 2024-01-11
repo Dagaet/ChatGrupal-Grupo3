@@ -11,12 +11,13 @@ public class ServerListener extends Thread{
         this.objInStream = socketObjectInputStream;
     }
 
+    //hacer aqui lo de recibir mensajes de servidor
     @Override
     public void run() {
         try {
             while (true) {
                 Message newMessage = (Message) this.objInStream.readObject();
-                System.out.println(newMessage);
+                System.out.println(newMessage.getUsername() + ": " + newMessage.getContent());
             }
         } catch (ClassNotFoundException e1) {
             System.out.println("No se encontró la clase message");
