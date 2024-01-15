@@ -27,31 +27,30 @@ public class ClientHandler extends Thread {
             while (true) {
                 Message msg = (Message) this.clientObjInStream.readObject();
                 if (msg.getContent().startsWith("bye")) {
-                    msg.setContent(null);
-                    clientObjOutStream.writeUTF("Saliendo ");
-                    this.connectedObjOutputStreamList.remove(this.clientObjOutStream);
-                    this.clientObjOutStream.close();
+                    for (ObjectOutputStream otherObjOutputStream : connectedObjOutputStreamList) {
+                        if (otherObjOutputStream != this.clientObjOutStream) {
+                            Message byeMessage = new Message();
+                            byeMessage.setContent(username + " ha salido del chat");
+                            byeMessage.setUsername("ServerOut");
+                            otherObjOutputStream.writeObject(byeMessage);
+                        }
+                    }
                     break;
                 } else if (msg.getContent().startsWith("msg:") ) {
                     msg.setContent(msg.getContent().substring(4, msg.getContent().length()));
-                    System.out.println(username + ": " + msg.getContent());
+                    for (ObjectOutputStream otherObjOutputStream : connectedObjOutputStreamList) {
+                        if (otherObjOutputStream != this.clientObjOutStream) {
+                            otherObjOutputStream.writeObject(msg);
+                        }
+                    }
                 } else {
                     clientObjOutStream.writeUTF("No sabes escribir");
                 }
-
-                for (ObjectOutputStream otherObjOutputStream : connectedObjOutputStreamList) {
-                    if (otherObjOutputStream != this.clientObjOutStream) {
-                        otherObjOutputStream.writeObject(msg);
-                    }
-                }
-
             }
 
         } catch (EOFException eofException) {
             this.connectedObjOutputStreamList.remove(this.clientObjOutStream);
-            System.out.println("CERRANDO CONEXIÓN CON " + username.toUpperCase());
           } catch (IOException | ClassNotFoundException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
           }
     }

@@ -12,17 +12,22 @@ public class ServerListener extends Thread{
     }
 
     //hacer aqui lo de recibir mensajes de servidor
+    // ObjectInputStream clientObjInStream, ObjectOutputStream clientObjOutStream, 
     @Override
     public void run() {
         try {
             while (true) {
                 Message newMessage = (Message) this.objInStream.readObject();
-                System.out.println(newMessage.getUsername() + ": " + newMessage.getContent());
+                if (newMessage.getUsername().equals("ServerOut")) {
+                    System.out.println(newMessage.getContent());
+                } else {
+                    System.out.println(newMessage.getUsername() + ": " + newMessage.getContent());
+                }
             }
         } catch (ClassNotFoundException e1) {
             System.out.println("No se encontró la clase message");
         } catch (IOException e2) {
-            System.out.println("Se dejo de escuchar los envios del servidor.");
+            System.out.println("Saliendo del chat...");
         }
     }
 }
