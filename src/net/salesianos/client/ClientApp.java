@@ -14,22 +14,24 @@ public class ClientApp {
         System.out.println("¿Cómo te llamas?");
         String username = SCANNER.nextLine();
         System.out.println("Hola " + username);
+        System.out.println("Ultimos mensajes: ");
         Socket socket = new Socket("localhost", 55000);
-        
-        ObjectOutputStream objOutStream = new ObjectOutputStream(socket.getOutputStream());
-        objOutStream.writeUTF(username);
-        
+
         ObjectInputStream objInStream = new ObjectInputStream(socket.getInputStream());
         ServerListener serverListener = new ServerListener(objInStream);
         serverListener.start();
-        Message msg = new Message("","","");
-        
+
+        ObjectOutputStream objOutStream = new ObjectOutputStream(socket.getOutputStream());
+        objOutStream.writeUTF(username);
+        objOutStream.flush();
+
+        Message msg = new Message();
+
         while (!msg.getContent().equals("bye")) {
-            
+            msg = new Message("", "", "");
             msg.setUsername(username);
             String content = SCANNER.nextLine();
             msg.setContent(content);
-            
             objOutStream.writeObject(msg);
         }
         SCANNER.close();
