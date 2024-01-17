@@ -2,12 +2,14 @@ package net.salesianos.shared.models;
 
 import java.io.Serializable;
 
-public class Message implements Serializable{
+public class Message implements Serializable {
     private String date;
     private String username;
     private String content;
 
-    public Message() {}
+    public Message() {
+        this.content = "";
+    }
 
     public Message(String date, String username, String content) {
         this.date = date;
@@ -41,6 +43,6 @@ public class Message implements Serializable{
 
     @Override
     public String toString() {
-        return date + username + " " +  content;
-    }    
+        return content;
+    }
 }
