@@ -7,22 +7,24 @@ import java.net.Socket;
 import java.util.ArrayList;
 
 import net.salesianos.server.threads.ClientHandler;
+import net.salesianos.shared.models.Chat;
 
 public class ServerApp {
     public static void main(String[] args) throws Exception {
         ServerSocket serverSocket = new ServerSocket(55000);
         ArrayList<ObjectOutputStream> connectedObjOutputStream = new ArrayList<>();
 
+        Chat chatlog = new Chat();
         while (true) {
             System.out.println("Esperando conexión...");
             Socket clientSocket = serverSocket.accept();
             System.out.println("CONEXIÓN ESTABLECIDA");
             ObjectOutputStream clientObjOutStream = new ObjectOutputStream(clientSocket.getOutputStream());
             connectedObjOutputStream.add(clientObjOutStream);
-            
+
             ObjectInputStream clientObjInStream = new ObjectInputStream(clientSocket.getInputStream());
-            
-            ClientHandler clientHandler = new ClientHandler(clientObjInStream, clientObjOutStream, connectedObjOutputStream);
+            ClientHandler clientHandler = new ClientHandler(clientObjInStream, clientObjOutStream,
+                    connectedObjOutputStream, chatlog);
             clientHandler.start();
 
         }
